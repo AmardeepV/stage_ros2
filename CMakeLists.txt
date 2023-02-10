@@ -28,6 +28,7 @@ find_package(image_transport REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(mrpt_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(std_srvs REQUIRED)
 find_package(tf2 REQUIRED)
@@ -56,6 +57,7 @@ ament_target_dependencies(stage_ros2
 		geometry_msgs
 		nav_msgs
 		sensor_msgs
+		mrpt_msgs
 		std_msgs
 		std_srvs
 		tf2

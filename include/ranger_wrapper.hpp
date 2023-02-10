@@ -65,7 +65,7 @@ public:
         transform.transform.translation.y = p.y;
         transform.transform.translation.z = p.z;
         transform.transform.rotation = toMsg(q);
-        tf_broadcaster->sendTransform(transform);
+        //tf_broadcaster->sendTransform(transform);
     }
     Stg::ModelRanger* model_;
     std::string parent_frame_id_;

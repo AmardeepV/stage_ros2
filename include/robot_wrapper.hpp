@@ -8,6 +8,7 @@
 #include <ranger_wrapper.hpp>
 #include <camera_wrapper.hpp>
 #include <position_wrapper.hpp>
+#include <fiducial_wrapper.hpp>
 
 namespace {
 void replaceAll(std::string& str, const std::string& from, const std::string& to) {
@@ -61,6 +62,9 @@ public:
             for (auto& camera : cameras_) {
                 camera->publish(tf_broadcaster_, now);
             }
+            for (auto& fiducial : fiducial_) {
+                fiducial->publish(tf_broadcaster_, now);
+            }
         }
     }
 
@@ -86,8 +90,12 @@ public:
                 mod->Subscribe();
                 cameras_.push_back(std::make_shared<CameraWrapper>(node_, static_cast<Stg::ModelCamera*>(mod), model_name, tf_prefix_));
             }
+            else if (mod->GetModelType() == "fiducial") {
+                mod->Subscribe();
+                fiducial_.push_back(std::make_shared<FiducialWrapper>(node_, static_cast<Stg::ModelFiducial*>(mod), model_name, tf_prefix_));
+            }
             else {
-                RCLCPP_WARN_STREAM(node_->get_logger(), "sensor " << mod->GetModelType() << "is not supported");
+                RCLCPP_WARN_STREAM(node_->get_logger(), "sensor " << mod->GetModelType() << " is not supported");
             }
         }
     }
@@ -99,5 +107,6 @@ public:
     std::shared_ptr<PositionWrapper> position_;
     std::vector<std::shared_ptr<CameraWrapper>> cameras_;
     std::vector<std::shared_ptr<RangerWrapper>> rangers_;
+    std::vector<std::shared_ptr<FiducialWrapper>> fiducial_;
     rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;
 };
